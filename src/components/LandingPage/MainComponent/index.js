@@ -37,7 +37,7 @@ const MainComponent = () => {
      <Link to="/dashboard">
       <Button text={"Dashboard"} onClick={() => console.log("Namste")}/>
      </Link>
-     <Button text={"Share App"} outlined={true} />
+     <Button text={"Share App"} outlined={true} onClick={() => console.log("Hello Namste")}/>
       
      </motion.div>
 

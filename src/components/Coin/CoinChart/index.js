@@ -32,7 +32,7 @@ function CoinChart({ chartData, priceType, multiAxis }) {
                 },
             },
 
-            crypto2:  {
+            crypto2: multiAxis && {
                 position:"right",
                 ticks: {
                     // Include a dollar sign in the ticks

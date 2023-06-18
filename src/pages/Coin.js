@@ -37,7 +37,8 @@ const CoinPage = () => {
       
       const prices = await getCoinPrices(id, days, priceType)
       if(prices.length > 0){
-        console.log("WOHOOOOOO");
+        console.log("Right");
+       
         settingChartData(setChartData, prices);
          setIsLoading(false); 
       }
@@ -49,24 +50,9 @@ const CoinPage = () => {
     setDays(event.target.value);
     const prices = await getCoinPrices(id, event.target.value, priceType)
       if(prices.length > 0){
-        console.log("HOOOOOO");
+        console.log("Everything correct");
         settingChartData(setChartData, prices);
          setIsLoading(false); 
-
-         setChartData({
-          labels:prices.map((price) => convertDate(price[0])),
-          datasets: [
-            {
-              data:prices.map((price) => price[1]),
-              borderColor: "#3a80e9",
-              borderWidth : 2,
-              fill: true,
-              tension: 0.25,
-              backgroundColor: "rgba(58, 128, 233, 0.1)",
-              pointRadius: 0,
-            },
-          ],
-         });
       }
   };
 
@@ -106,7 +92,7 @@ const CoinPage = () => {
 
             />
             
-            <CoinChart chartData={chartData}  priceType={priceType} />
+            <CoinChart chartData={chartData}  priceType={priceType}  multiAxis={false} />
             
               
             {/* <LineChart chartData={chartData}  priceType={priceType} />

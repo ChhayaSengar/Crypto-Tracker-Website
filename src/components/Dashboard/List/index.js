@@ -1,4 +1,4 @@
-import React  from 'react'
+import React, {useState}  from 'react'
 import "./styles.css";
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import TrendingDownRoundedIcon from '@mui/icons-material/TrendingDownRounded';
@@ -6,14 +6,22 @@ import Tooltip from '@mui/material/Tooltip';
 import { convertNumber } from "../../../functions/convertNumbers";
 import { Link } from 'react-router-dom';
 import { motion } from "framer-motion";
+import { IconButton } from "@mui/material";
+import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
+import { addToWatchlist } from "../../../functions/addToWatchlist";
+import StarRoundedIcon from "@mui/icons-material/StarRounded";
+import { hasBeenAdded } from "../../../functions/hasBeenAdded";
+import { removeFromWatchlist } from "../../../functions/removeFromWatchlist";
 
 
 
-
-function List({ coin }) {
+function List({ coin, delay, isWatchlistPage}) {
+  const [added, setAdded] = useState(hasBeenAdded(coin.id));
   return (
     <Link to={`/coin/${coin.id}`}>
-      <motion.tr className="list-row"
+      <motion.tr 
+       style={{ display: isWatchlistPage && !added && "none" }}
+      className="list-row"
       initial={{ opacity: 0, x: -50 }}
     whileInView={{ opacity: 1, x: 0 }}
     transition={{ duration: 0.5 }}>
@@ -54,7 +62,7 @@ function List({ coin }) {
         <Tooltip title="Current Price" placement="bottom-start">
           <td>
             <h3
-              className="coin-price td-center-align td-coin-price"
+              className="coin-price td-center-align td-coin-price desktop-price"
               style={{
                 color:
                   coin.price_change_percentage_24h < 0
@@ -64,6 +72,18 @@ function List({ coin }) {
             >
               ${coin.current_price.toLocaleString()}
             </h3>
+            <p
+              className={`coin-price coin-price-list mobile-price ${
+                coin.price_change_percentage_24h < 0 && "coin-price-red"
+              }`}
+            >
+              $
+              {convertNumber(
+                coin.current_price < 1
+                  ? parseFloat(coin.current_price).toFixed(3)
+                  : parseInt(coin.current_price)
+              )}
+            </p>
           </td>
         </Tooltip>
         <Tooltip title="Total Volume" placement="bottom-start">
@@ -83,14 +103,42 @@ function List({ coin }) {
         <Tooltip title="Market Cap" placement="bottom-start">
           <td className="mobile-td-mkt">
             <p className="market-cap td-right-align td-coin-price">
-              ${convertNumber(coin.market_cap)}
+              ${convertNumber(parseFloat(coin.market_cap))}
             </p>
           </td>
         </Tooltip>
+        <td className='icon-star'
+        style={{width: "fit-content"}}>
+          <IconButton
+            onClick={(e) => {
+              e.preventDefault();
+              if (added) {
+                removeFromWatchlist(coin.id);
+                setAdded(false);
+              } else {
+                addToWatchlist(coin.id);
+                setAdded(true);
+              }
+            }}
+          >
+            {added ? (
+              <StarRoundedIcon
+                className={`watchlist-icon ${
+                  coin.price_change_percentage_24h < 0 && "watchlist-icon-red"
+                } `}
+              />
+            ) : (
+              <StarBorderRoundedIcon
+                className={`watchlist-icon ${
+                  coin.price_change_percentage_24h < 0 && "watchlist-icon-red"
+                } `}
+              />
+            )}
+          </IconButton>
+          </td>
       </motion.tr>
     </Link>
   );
 }
 
 export default List;
-

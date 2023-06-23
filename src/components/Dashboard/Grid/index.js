@@ -14,6 +14,7 @@ import { removeFromWatchlist } from "../../../functions/removeFromWatchlist";
 
 const Grid = ({coin,  delay, isWatchlistPage}) => {
   const [added, setAdded] = useState(hasBeenAdded(coin.id));
+ 
   return (
     <Link to = {`/coin/${coin.id}`} >
     <motion.div 
@@ -66,7 +67,7 @@ const Grid = ({coin,  delay, isWatchlistPage}) => {
         {coin.price_change_percentage_24h > 0 ? ( 
            <div className='chip-flex'>
               <div className='price-chip'>{coin.price_change_percentage_24h.toFixed(2)}%
-               </div>
+            </div>
 
             <div  className='icon-chip' >
             <TrendingUpRoundedIcon />
